@@ -29,7 +29,7 @@ class AuthenticationServiceTest {
         // Arrange
         String testUsername = "12345678900";
 
-        when(userRepository.findByCpf(testUsername)).thenReturn((User) user);
+        when(userRepository.findByEmailOrCpf(testUsername)).thenReturn((User) user);
 
         authenticationService.userRepository = userRepository;
 
@@ -39,7 +39,7 @@ class AuthenticationServiceTest {
         // Assert
         assertNotNull(userDetails);
         assertEquals(user, userDetails);
-        verify(userRepository, times(1)).findByCpf(testUsername);
+        verify(userRepository, times(1)).findByEmailOrCpf(testUsername);
     }
 
     @Test
@@ -47,12 +47,12 @@ class AuthenticationServiceTest {
         // Arrange
         String testUsername = "12345678900";
 
-        when(userRepository.findByCpf(testUsername)).thenReturn(null);
+        when(userRepository.findByEmailOrCpf(testUsername)).thenReturn(null);
         authenticationService.userRepository = userRepository;
 
         // Act & Assert
         assertNull(authenticationService.loadUserByUsername(testUsername));
 
-        verify(userRepository, times(1)).findByCpf(testUsername);
+        verify(userRepository, times(1)).findByEmailOrCpf(testUsername);
     }
 }
