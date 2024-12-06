@@ -6,6 +6,7 @@ import com.nimble.payment.domain.RegisterDTO;
 import com.nimble.payment.domain.User;
 import com.nimble.payment.infra.security.TokenService;
 import com.nimble.payment.repositories.UserRepository;
+import com.nimble.payment.utils.ValidateCpf;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -41,10 +42,15 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     public ResponseEntity create(@RequestBody @Valid RegisterDTO data) {
-        if(this.userRepository.findByEmailOrCpf(data.cpf()) != null) return ResponseEntity.badRequest().build();
+        String replacedCpf = data.cpf().replaceAll("[^0-9]", "");
+        if(this.userRepository.findByEmailOrCpf(replacedCpf) != null || this.userRepository.findByEmailOrCpf(data.email()) != null)
+            return ResponseEntity.badRequest().build();
+
+        if(!ValidateCpf.isCPF(replacedCpf))
+            return ResponseEntity.badRequest().build();
 
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
-        User user = new User(data.name(), data.cpf(), data.email(), encryptedPassword);
+        User user = new User(data.name(), replacedCpf, data.email(), encryptedPassword);
 
         this.userRepository.save(user);
 
