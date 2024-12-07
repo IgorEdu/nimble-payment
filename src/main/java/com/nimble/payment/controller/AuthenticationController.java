@@ -1,9 +1,9 @@
 package com.nimble.payment.controller;
 
-import com.nimble.payment.domain.AuthenticationDTO;
-import com.nimble.payment.domain.LoginResponseDTO;
-import com.nimble.payment.domain.RegisterDTO;
-import com.nimble.payment.domain.User;
+import com.nimble.payment.domain.user.AuthenticationDTO;
+import com.nimble.payment.domain.user.LoginResponseDTO;
+import com.nimble.payment.domain.user.RegisterDTO;
+import com.nimble.payment.domain.user.User;
 import com.nimble.payment.infra.security.TokenService;
 import com.nimble.payment.repositories.UserRepository;
 import com.nimble.payment.utils.ValidateCpf;

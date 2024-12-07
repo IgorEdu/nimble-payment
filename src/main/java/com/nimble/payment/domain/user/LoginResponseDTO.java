@@ -1,4 +1,4 @@
-package com.nimble.payment.domain;
+package com.nimble.payment.domain.user;
 
 public record LoginResponseDTO(String token) {
 }
